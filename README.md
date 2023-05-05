@@ -1,8 +1,6 @@
-# langchain-ts-starter
+# langchain-node
 
-Boilerplate to get started quickly with the [Langchain Typescript SDK](https://github.com/hwchase17/langchainjs).
-
-This uses the same tsconfig and build setup as the [examples repo](https://github.com/hwchase17/langchainjs/tree/main/examples), to ensure it's in sync with the official docs.
+Query a local PDF using langchain, OpenAI, Pinecone
 
 # What's included
 
@@ -15,8 +13,12 @@ This uses the same tsconfig and build setup as the [examples repo](https://githu
 
 # How to use
 
+- Follow docs to set up a Pinecone index
+- Add API keys to .env
+
 - Clone this repository
 - `npm install`
-- Write your code in `src`
+- Add a pdf in assets
 - `npx turbo run build lint format` to run build scripts quickly in parallel
-- `npm start` to run your program
+- `npm start load "./assets/[filepath]"` to push docs up to Pinecone using OpenAI embeddings
+- `npm start query [ prompt ]` to ask a question about the PDF content
