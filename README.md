@@ -13,12 +13,15 @@ Query a local PDF using langchain, OpenAI, Pinecone
 
 # How to use
 
-- Follow docs to set up a Pinecone index
-- Add API keys to .env
-
+- Follow Pinecone docs to set up a Pinecone index
 - Clone this repository
 - `npm install`
-- Add a pdf in assets
+- Add API keys to .env
+- Create assets directory
+- Add a PDF in assets
 - `npx turbo run build lint format` to run build scripts quickly in parallel
+
+# To run the app
+
 - `npm start load "./assets/[filepath]"` to push docs up to Pinecone using OpenAI embeddings
 - `npm start query [ prompt ]` to ask a question about the PDF content
