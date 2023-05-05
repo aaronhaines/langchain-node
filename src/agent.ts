@@ -27,10 +27,8 @@ export async function agent(query: string): Promise<ChainValues> {
   });
 
   // Query the docs
-  // const query = "What is this book about?";
   const docs = await docsearch.similaritySearch(query, 3);
-  // console.log(docs[0].pageContent.slice(0, 250));
-
+  
   // Answer the question
   const chain = loadQAStuffChain(llm);
   return chain.call({

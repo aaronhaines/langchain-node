@@ -6,17 +6,12 @@ import { loader } from "./loader.ts";
 
 dotenv.config();
 
-// const FILE_PATH = "./assets/Wardley Maps - Simon Wardley.pdf";
-// const QUESTION = "What is this book about? Give me a 3 sentence summary.";
-
-// index.js
-
 // creating a command instance
 const program = new Command();
 
 // creating tool
 program
-  .name("Chatbot")
+  .name("Docsearch")
   .description("A CLI tool for searching a text")
   .version("1.0.0");
 
@@ -42,12 +37,3 @@ program
   });
 
 program.parse();
-
-// console.log(QUESTION);
-
-// loader(FILE_PATH).then(async (store) => {
-//   console.log(`Loaded the store! ${store}`);
-
-//   const answer: ChainValues = await agent(QUESTION);
-//   console.log(`Answer: ${answer.text}`);
-// });
