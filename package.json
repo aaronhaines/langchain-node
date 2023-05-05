@@ -27,8 +27,13 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@pinecone-database/pinecone": "^0.0.10",
+    "commander": "^10.0.1",
     "dotenv": "^16.0.3",
     "langchain": "^0.0.39",
+    "openai": "^3.2.1",
+    "pdf-parse": "^1.1.1",
+    "pinecone-client": "^1.1.0",
     "tsup": "^6.7.0"
   },
   "devDependencies": {
