@@ -1,38 +1,38 @@
 import { OpenAI } from "langchain";
-import { OpenAIEmbeddings } from "langchain/embeddings";
-import { loadQAStuffChain } from "langchain/chains";
-import { PineconeStore } from "langchain/vectorstores";
-import { PineconeClient } from "@pinecone-database/pinecone";
-import { ChainValues } from "langchain/schema";
+import { initializeAgentExecutor } from "langchain/agents";
+import { DynamicTool } from "langchain/tools";
 
-export async function agent(query: string): Promise<ChainValues> {
-  // Create the Pinecone client
-  const client = new PineconeClient();
-  await client.init({
-    apiKey: process.env.PINECONE_API_KEY as string,
-    environment: process.env.PINECONE_ENVIRONMENT as string,
-  });
-  const pineconeIndex = client.Index(process.env.PINECONE_INDEX as string);
+export const tool = async (input: string) => {
+  const model = new OpenAI({ temperature: 0 });
+  const tools = [
+    new DynamicTool({
+      name: "FOO",
+      description:
+        "call this to get the value of foo. input should be an empty string.",
+      func: async (input: string) => {
+        console.log(`foo input is ${input}`);
+        return "foo";
+      },
+    }),
+    new DynamicTool({
+      name: "BAR",
+      description:
+        "call this to get the value of bar. input should be a string: what is bar? or what is the value of bar? or something like that",
+      func: async (input: string) => {
+        console.log(`bar input is ${input}`);
+        return 42;
+      },
+    }),
+  ];
 
-  // Create the LLM
-  const llm = new OpenAI({ openAIApiKey: process.env.OPENAI_API_KEY });
+  const executor = await initializeAgentExecutor(
+    tools,
+    model,
+    "zero-shot-react-description"
+  );
 
-  // Create embeddings
-  const embeddings = new OpenAIEmbeddings({
-    openAIApiKey: process.env.OPENAI_API_KEY,
-  });
+  console.log("Loaded agent.");
+  console.log(`Executing with input "${input}"...`);
 
-  const docsearch = await PineconeStore.fromExistingIndex(embeddings, {
-    pineconeIndex,
-  });
-
-  // Query the docs
-  const docs = await docsearch.similaritySearch(query, 3);
-  
-  // Answer the question
-  const chain = loadQAStuffChain(llm);
-  return chain.call({
-    input_documents: docs,
-    question: query,
-  });
-}
+  return executor.call({ input });
+};

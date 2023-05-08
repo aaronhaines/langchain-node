@@ -1,8 +1,9 @@
 import * as dotenv from "dotenv";
 import { Command } from "commander";
 import { ChainValues } from "langchain/schema";
-import { agent } from "./agent.ts";
+import { query } from "./query.ts";
 import { loader } from "./loader.ts";
+import { tool } from "./agent.ts";
 
 dotenv.config();
 
@@ -22,7 +23,7 @@ program
   .argument("<question>", "Question")
   .action(async (q: string) => {
     console.log(q);
-    const answer: ChainValues = await agent(q);
+    const answer: ChainValues = await query(q);
     console.log(`Answer: ${answer.text}`);
   });
 
@@ -36,4 +37,13 @@ program
     console.log(`Loaded the store! ${store}`);
   });
 
-program.parse();
+program
+  .command("tool")
+  .description("Use a tool")
+  .argument("<input>", "Input to tool")
+  .action(async (input: string) => {
+    const result = await tool(input);
+    console.log(`Got output ${result.output}`);
+  });
+
+program.parse(process.argv);
