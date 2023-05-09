@@ -1,10 +1,14 @@
 import * as dotenv from "dotenv";
+import * as readline from "node:readline/promises";
+import { stdin as input, stdout as output } from "node:process";
 import { Command } from "commander";
 import { ChainValues } from "langchain/schema";
 import { query } from "./query.ts";
 import { loader } from "./loader.ts";
 
 dotenv.config();
+
+const rl = readline.createInterface({ input, output });
 
 // creating a command instance
 const program = new Command();
@@ -16,6 +20,17 @@ program
   .version("1.0.0");
 
 // adding command
+program
+  .command("chat")
+  .description("Interactive mode")
+  .action(async () => {
+    while (true) {
+      const q = await rl.question("How can I help?");
+      const answer: ChainValues = await query(q);
+      console.log(`Answer: ${answer.text}`);
+    }
+  });
+
 program
   .command("query")
   .description("Ask a question")
