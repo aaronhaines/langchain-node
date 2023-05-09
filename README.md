@@ -24,4 +24,5 @@ Query a local PDF using langchain, OpenAI, Pinecone
 # To run the app
 
 - `npm start load "./assets/[filepath]"` to push docs up to Pinecone using OpenAI embeddings
-- `npm start query [ prompt ]` to ask a question about the PDF content
+- `npm start query [ prompt ]` to ask a single question about the PDF content
+- `npm start chat` to start an interactive chat about the PDF content
